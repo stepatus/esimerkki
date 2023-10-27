@@ -33,6 +33,20 @@ namespace esimerkki
             string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\k2101816\\OneDrive - Epedu O365\\3. lukuvuosi\\Sovelluskehitys\\esimerkki\\tuotekanta.mdf\";Integrated Security=True;Connect Timeout=30";
             SqlConnection kanta = new SqlConnection(polku);
             kanta.Open();
+
+            //Tehdään sql-komento
+            string kysely = "Select * from tuotteet";
+            SqlCommand komento= kanta.CreateCommand();
+            komento.CommandText = kysely;
+
+            //Tehdään data adapteri ja taulu johon tiedot haetaan
+            SqlDataAdapter adapteri = new SqlDataAdapter(komento);
+            DataTable dt = new DataTable("tuotteet");
+            adapteri.Fill(dt);
+
+            //Sijoitetaan data taulun tiedot DataGridiin//
+            tuotelista.ItemsSource = dt.DefaultView;
+            kanta.Close();
         }
     }
 }
