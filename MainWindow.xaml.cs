@@ -23,14 +23,15 @@ namespace esimerkki
     /// </summary>
     public partial class MainWindow : Window
     {
+        private string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\k2101816\\OneDrive - Epedu O365\\3. lukuvuosi\\Sovelluskehitys\\esimerkki\\tuotekanta.mdf\";Integrated Security=True;Connect Timeout=30";
+
         public MainWindow()
         {
             InitializeComponent();
         }
 
         private void hae_painike_Click(object sender, RoutedEventArgs e)
-        {
-            string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\k2101816\\OneDrive - Epedu O365\\3. lukuvuosi\\Sovelluskehitys\\esimerkki\\tuotekanta.mdf\";Integrated Security=True;Connect Timeout=30";
+        {   
             SqlConnection kanta = new SqlConnection(polku);
             kanta.Open();
 
@@ -47,6 +48,18 @@ namespace esimerkki
             //Sijoitetaan data taulun tiedot DataGridiin//
             tuotelista.ItemsSource = dt.DefaultView;
             kanta.Close();
+        }
+
+        private void lisää_painike_Click(object sender, RoutedEventArgs e)
+        {
+            SqlConnection kanta = new SqlConnection(polku);
+            kanta.Open();
+
+            string sql= "insert into tuotteet (nimi,hinta) values(' " + tuote_nimi.Text + "','" +tuote_hinta.Text+ " ')";
+            
+            SqlCommand komento = new SqlCommand(sql,kanta);
+            komento.ExecuteNonQuery();
+            kanta.Close() ;
         }
     }
 }
